@@ -18,9 +18,13 @@ exports.appModule.config(function($routeProvider) {
     when('/track', {
       templateUrl : '/html/track.html',
       controller : require('./track_controller.js').TrackController
+    }).
+    when('/weekly', {
+      templateUrl : '/html/weekly.html',
+      controller : require('./weekly_controller.js').WeeklyController
     });
 });
-},{"./angular-route.1.2.10.js":2,"./filters.common":3,"./login_controller.js":4,"./track_controller.js":5,"angular":7}],2:[function(require,module,exports){
+},{"./angular-route.1.2.10.js":2,"./filters.common":3,"./login_controller.js":4,"./track_controller.js":5,"./weekly_controller.js":6,"angular":8}],2:[function(require,module,exports){
 
 
 /**
@@ -967,7 +971,7 @@ exports.rangeFactory = function() {
     return ret;
   };
 };
-},{"underscore":10}],4:[function(require,module,exports){
+},{"underscore":11}],4:[function(require,module,exports){
 exports.LoginController = function($scope, $http, $window) {
   var RELOAD_EVERY_MS = 1000 * 60 * 60;
 
@@ -1115,7 +1119,37 @@ exports.TrackController = function($scope, $http, $window) {
   $scope.loadDay();
 };
 
-},{"../common/calculations.js":6,"moment":9}],6:[function(require,module,exports){
+},{"../common/calculations.js":7,"moment":10}],6:[function(require,module,exports){
+var moment = require('moment');
+var _ = require('underscore');
+
+exports.WeeklyController = function($scope, $http) {
+  $scope.data = {};
+
+  $scope.load = function() {
+    $http.get('/api/weekly').
+      success(function(data) {
+        $scope.data = data;
+
+        _.each($scope.data.weeks, function(w, i) {
+          var year = $scope.data.yearForWeek[i];
+          var m = moment.utc();
+          // MongoDB uses 0-based weeks for some reason, hence w + 1
+          m.year(year).isoWeek(w + 1).weekday(0);
+          $scope.data.weeks[i] = m.format("MM/DD/YYYY") + " - " +
+            m.weekday(6).format("MM/DD/YYYY");
+        });
+      }).
+      error(function(data) {
+        if (data.redirect) {
+          $window.location.href = data.redirect;
+        }
+      });
+  };
+
+  $scope.load();
+};
+},{"moment":10,"underscore":11}],7:[function(require,module,exports){
 var _ = require('underscore');
 
 exports.computeUINutrientsPer100G = function(nutrients) {
@@ -1162,12 +1196,12 @@ exports.computeUINutrientsForDay = function(day) {
 
   return computed;
 };
-},{"underscore":10}],7:[function(require,module,exports){
+},{"underscore":11}],8:[function(require,module,exports){
 require('./lib/angular.min.js');
 
 module.exports = angular;
 
-},{"./lib/angular.min.js":8}],8:[function(require,module,exports){
+},{"./lib/angular.min.js":9}],9:[function(require,module,exports){
 /*
  AngularJS v1.2.10
  (c) 2010-2014 Google, Inc. http://angularjs.org
@@ -1371,7 +1405,7 @@ ngInit:te,ngNonBindable:ue,ngPluralize:ve,ngRepeat:we,ngShow:xe,ngStyle:ze,ngSwi
 $q:zd,$sce:Fd,$sceDelegate:Ed,$sniffer:Gd,$templateCache:hd,$timeout:Hd,$window:Id})}])})(Ca);A(Q).ready(function(){Tc(Q,Zb)})})(window,document);!angular.$$csp()&&angular.element(document).find("head").prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\\:form{display:block;}</style>');
 //# sourceMappingURL=angular.min.js.map
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 //! moment.js
 //! version : 2.4.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -3687,7 +3721,7 @@ $q:zd,$sce:Fd,$sceDelegate:Ed,$sniffer:Gd,$templateCache:hd,$timeout:Hd,$window:
     }
 }).call(this);
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -4965,4 +4999,4 @@ $q:zd,$sce:Fd,$sceDelegate:Ed,$sniffer:Gd,$templateCache:hd,$timeout:Hd,$window:
 
 }).call(this);
 
-},{}]},{},[1,2,3,4,5])
+},{}]},{},[1,2,3,4,5,6])

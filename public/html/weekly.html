@@ -1,0 +1,21 @@
+<div  class="row"
+      style="min-height: 1000px">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Week</th>
+        <th>Calories / Day</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="week in data.weeks">
+        <td>
+          {{ week }}
+        </td>
+        <td>
+          {{ data.caloriesPerWeek[$index] / data.daysPerWeek[$index].length }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

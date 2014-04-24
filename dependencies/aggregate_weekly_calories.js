@@ -19,6 +19,7 @@ exports.factory = function(mongodb, cron) {
         $project : {
           week : { $week : "$date" },
           dayOfWeek : { $dayOfWeek : "$date" },
+          year : { $year : "$date" },
           user : "$user",
           foods : "$foods"
         }
@@ -44,7 +45,8 @@ exports.factory = function(mongodb, cron) {
         $group : {
           _id : {
             week : "$week",
-            user : "$user"
+            user : "$user",
+            year : "$year"
           },
           days : { $addToSet : '$dayOfWeek' },
           calories : {
@@ -62,6 +64,7 @@ exports.factory = function(mongodb, cron) {
         $group : {
           _id : "$_id.user",
           weeks : { $push : "$_id.week" },
+          yearForWeek : { $push : "$_id.year" },
           daysPerWeek : { $push : "$days" },
           caloriesPerWeek : { $push : "$calories" }
         }

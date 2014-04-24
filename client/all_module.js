@@ -17,5 +17,9 @@ exports.appModule.config(function($routeProvider) {
     when('/track', {
       templateUrl : '/html/track.html',
       controller : require('./track_controller.js').TrackController
+    }).
+    when('/weekly', {
+      templateUrl : '/html/weekly.html',
+      controller : require('./weekly_controller.js').WeeklyController
     });
 });
