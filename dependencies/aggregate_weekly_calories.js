@@ -6,8 +6,8 @@ exports.factory = function(mongodb, cron) {
   ret.outputCollection = 'weekly_calories';
 
   ret.get = function(user, callback) {
-    mongodb.connection().collection(ret.outputCollection).findOne({ _id : user },
-        function(error, doc) {
+    mongodb.connection().collection(ret.outputCollection).findOne(
+        { _id : user.toString() }, function(error, doc) {
       callback(error, doc);
     });
   };

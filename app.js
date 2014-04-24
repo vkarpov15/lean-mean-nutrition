@@ -48,6 +48,7 @@ app.get('/', api.index.inject(di));
 app.get('/api/day/:date', checkLogin, api.day.get.inject(di));
 app.get('/api/food/search/:search', api.searchFood.inject(di));
 app.get('/api/me', api.user.get.inject(di));
+app.get('/api/weekly', checkLogin, api.byWeek.inject(di));
 
 app.put('/api/day/:date', checkLogin, api.day.put.inject(di));
 

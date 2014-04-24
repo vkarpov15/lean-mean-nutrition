@@ -60,7 +60,7 @@ exports.day = {
         });
     }
   }
-}
+};
 
 /* Because MongooseJS doesn't quite support sorting by text search score
  * just yet, just use the NodeJS driver directly */
@@ -82,5 +82,13 @@ exports.searchFood = function(foodItem) {
           res.json(foodItems);
         }
       });
+  }
+};
+
+exports.byWeek = function(weeklyCalorieAggregator) {
+  return function(req, res) {
+    weeklyCalorieAggregator.get(req.user.username, function(error, doc) {
+      res.json(doc);
+    });
   }
 };
