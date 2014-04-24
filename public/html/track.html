@@ -62,7 +62,7 @@
             </span>
             <input  type="text"
                     ng-model="food.selectedWeight.amount"
-                    ng-change="recalculate()">
+                    ng-change="updateUnit(food)">
             <select ng-options="i as food.weights[i].unit for i in 0 | range:food.weights.length"
                     ng-model="food.selectedWeight.index"
                     ng-change="updateUnit(food);">

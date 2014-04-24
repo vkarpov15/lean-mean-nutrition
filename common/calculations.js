@@ -38,7 +38,7 @@ exports.computeUINutrientsForDay = function(day) {
       var originalAmount = food.weights[food.selectedWeight.index].amount;
       var gramsPerServing = food.selectedWeight.grams
       computed[key] +=
-        value * (selectedAmount / originalAmount) * (gramsPerServing / 100);
+        value * (gramsPerServing / 100);
     });
   });
 

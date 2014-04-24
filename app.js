@@ -9,7 +9,8 @@ var api           = require('./routes/api.js'),
     http          = require('http'),
     omni          = require('omni-di'),
     passport      = require('passport'),
-    path          = require('path');
+    path          = require('path'),
+    test          = require('./routes/test.js');
 
 var app = express();
 
@@ -55,6 +56,9 @@ app.get('/logout', authenticate.logout.inject(di));
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/return', passport.authenticate('twitter',
   { successRedirect: '/', failureRedirect: '/login' }));
+
+// Test
+app.get('/test/aggregation/weekly', test.calorieAggregatorEndpoint.inject(di));
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

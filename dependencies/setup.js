@@ -19,6 +19,10 @@ exports.createDependencies = function(di) {
         obj : require('fs')
       },
       {
+        name : "cron",
+        obj : require('cron')
+      },
+      {
         name : "FoodItem",
         factory : function() {
           var schema = require('../models/food_item.js').CreateFoodItemSchema();
@@ -46,6 +50,22 @@ exports.createDependencies = function(di) {
           var schema = require('../models/user.js').CreateUserSchema();
           return db.model('users', schema);
         }
+      },
+      {
+        name : "mongodb",
+        factory : function() {
+          return {
+            connection : function() {
+              return conn;
+            }
+          };
+        }
+      }
+    ],
+    [
+      {
+        name : "weeklyCalorieAggregator",
+        factory : require('./aggregate_weekly_calories.js').factory
       }
     ]
   ]);
