@@ -12,7 +12,8 @@ exports.CreateUserSchema = function() {
 
   var ret = new Mongoose.Schema({
     _id : String,
-    username : String
+    username : String,
+    oldest: Date
   }, schemaOptions);
 
   return ret;

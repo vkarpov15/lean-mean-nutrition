@@ -39,13 +39,23 @@ exports.day = {
       });
     };
   },
-  put : function(Day) {
+  put : function(Day, User) {
     return function(req, res) {
       var username = req.user.username;
       var date = moment.utc(req.params.date);
       if (!date.isValid()) {
         return res.json(400, { error : "Invalid date" });
       }
+
+      User.update({
+        username: req.user.username,
+      },
+      {
+        $min: {
+          oldest: date.toDate()
+        }
+      },
+      function() {});
 
       Day.update(
         { user : username, date : date.toDate() },
